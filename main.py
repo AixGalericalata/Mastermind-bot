@@ -24,7 +24,7 @@ def reply(update, context):
                                              one_time_keyboard=True))
         return
     if message == 'Классический':
-        bot = SimpleBot(10, 4, False)
+        bot = SimpleBot(9, 4, False)
     elif message == 'Обычный':
         bot = SimpleBot(6, 4, True)
     elif message == 'Продвинутый':

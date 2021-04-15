@@ -19,5 +19,5 @@ class SimpleBot:
 
     def get_greeting(self):
         msg = 'с повторениями' if self.repetition else 'без повторений'
-        return f'Я загадал комбинацию из {self.num_symbols} цифр от 0 до {self.num_colors - 1} {msg}.\n' \
+        return f'Я загадал комбинацию из {self.num_symbols} цифр от 1 до {self.num_colors} {msg}.\n' \
                f'Попробуйте её отгадать!'
