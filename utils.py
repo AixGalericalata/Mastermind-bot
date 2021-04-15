@@ -6,8 +6,8 @@ def to_byte_array(s, num_symbols, num_colors, repetition):
     for i in s:
         if i.isdigit():
             t = int(i)
-            if 0 <= t < num_colors:
-                array.append(t)
+            if 1 <= t <= num_colors:
+                array.append(t - 1)
             else:
                 return 'Одна из цифр неправильная.'
         else:
