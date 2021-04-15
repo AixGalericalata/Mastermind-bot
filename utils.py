@@ -1,3 +1,6 @@
+from PIL import Image
+
+
 def to_byte_array(s, num_symbols, num_colors):
     if len(s) != num_symbols:
         return None
