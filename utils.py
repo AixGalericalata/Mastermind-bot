@@ -1,9 +1,6 @@
-from PIL import Image
-
-
-def to_byte_array(s, num_symbols, num_colors):
+def to_byte_array(s, num_symbols, num_colors, repetition):
     if len(s) != num_symbols:
-        return None
+        return 'Неправильное кол-во символов.'
 
     array = bytearray()
     for i in s:
@@ -12,8 +9,12 @@ def to_byte_array(s, num_symbols, num_colors):
             if 0 <= t < num_colors:
                 array.append(t)
             else:
-                return None
+                return 'Одна из цифр неправильная.'
         else:
-            return None
+            return 'Одна из цифр неправильная.'
+
+    if not repetition:
+        if len(array) != len(set(array)):
+            return 'Мы играем без повторений цифр.'
 
     return array
