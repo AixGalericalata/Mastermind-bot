@@ -13,7 +13,7 @@ def create_image(moves):
     x = 20
     y = HEIGHT - 55
     for move in moves:
-        user_move = ''.join(map(lambda x: str(x), move[0]))
+        user_move = ''.join(map(lambda x: str(x + 1), move[0]))
         draw.text((x, y), f'{user_move} {" " * 7} {bull * move[1][0]} {cow * move[1][1]}',
                   embedded_color=True, font=font)
         y -= 40
