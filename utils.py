@@ -1,4 +1,6 @@
 def to_byte_array(s, num_symbols, num_colors, repetition):
+    if s == '/stop':
+        return '/stop'
     if len(s) != num_symbols:
         return 'Неправильное кол-во символов.'
 
