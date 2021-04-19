@@ -3,8 +3,7 @@ from telegram import ReplyKeyboardMarkup
 from simple_bot import SimpleBot
 from utils import to_byte_array
 from advanced_bot import AdvancedBot
-from image_utils import create_image
-from io import BytesIO
+from text_utils import create_text
 import pymorphy2
 
 TOKEN = '1714855501:AAHe0feLA42F36y-3luseYthox3gadVF5Rk'
@@ -52,34 +51,21 @@ def reply_image(update, context):
         return
     answer = bot.get_answer(msg)
     context.user_data['moves'].append((msg, answer))
-    image = create_image(context.user_data['moves'])
-    bio = BytesIO()
-    bio.name = 'image.png'
-    image.save(bio, 'PNG')
-    bio.seek(0)
+    text = create_text(context.user_data['moves'])
     if answer[0] == bot.num_symbols:
-        context.bot.send_photo(
-            update.message.chat_id,
-            bio,
-            caption=f'Поздравляю, вы угадали! Игра окончена.'
-        )
+        update.message.reply_text(f'{text}\n\nПоздравляю, вы угадали! Игра окончена.'
+                                  )
         context.user_data.clear()
     else:
         if len(context.user_data['moves']) >= max_num_moves:
-            context.bot.send_photo(
-                update.message.chat_id,
-                bio,
-                caption='Вы проиграли!'
-            )
+            update.message.reply_text(f'{text}\n\nВы проиграли!'
+                                      )
             context.user_data.clear()
         else:
             left_moves = max_num_moves - len(context.user_data["moves"])
             left_moves_word = move_word.make_agree_with_number(left_moves).word
-            context.bot.send_photo(
-                update.message.chat_id,
-                bio,
-                caption=f'У Вас осталось {left_moves} {left_moves_word}.'
-            )
+            update.message.reply_text(f'{text}\n\nУ Вас осталось {left_moves} {left_moves_word}.'
+                                      )
 
 
 def start(update, context: CallbackContext):
