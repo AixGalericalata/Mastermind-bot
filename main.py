@@ -1,5 +1,6 @@
-from telegram.ext import Updater, MessageHandler, Filters, CommandHandler, CallbackContext
-from telegram import ReplyKeyboardMarkup
+from telegram.ext import Updater, MessageHandler, Filters, CommandHandler, CallbackContext, \
+    CallbackQueryHandler
+from telegram import ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
 from simple_bot import SimpleBot
 from utils import to_byte_array
 from advanced_bot import AdvancedBot
@@ -8,8 +9,17 @@ import pymorphy2
 
 TOKEN = '1714855501:AAHe0feLA42F36y-3luseYthox3gadVF5Rk'
 max_num_moves = 10
-levels_keyboard = [['Классический', 'Обычный', 'Продвинутый'],
-                   ['Правила']]
+wikipedia = 'https://ru.wikipedia.org/wiki/%D0%91%D1%8B%D0%BA%D0%B8_%D0%B8_%D0%BA%D0%BE%D1%80%D0%BE%D0%B2%D1%8B'
+
+keyboard = [
+    [
+        InlineKeyboardButton("Классический", callback_data='1'),
+        InlineKeyboardButton("Обычный", callback_data='2'),
+        InlineKeyboardButton("Продвинутый", callback_data='3')
+    ],
+    [InlineKeyboardButton("Правила", url=wikipedia)],
+]
+
 morph = pymorphy2.MorphAnalyzer()
 move_word = morph.parse('ходы')[0]
 
@@ -19,28 +29,25 @@ def reply(update, context):
     if bot:
         reply_image(update, context)
         return
+    update.message.reply_text('Если хотите начать игру заново, напишите /start.')
 
-    message = update.message.text
-    if message == 'Правила':
-        update.message.reply_text(
-            'https://ru.wikipedia.org/wiki/%D0%91%D1%8B%D0%BA%D0%B8_%D0%B8_%D0%BA%D0%BE%D1%80%D0%BE%D0%B2%D1%8B',
-            reply_markup=ReplyKeyboardMarkup(levels_keyboard,
-                                             one_time_keyboard=True))
-        return
-    if message == 'Классический':
+
+def button(update, context: CallbackContext) -> None:
+    query = update.callback_query
+    query.answer()
+
+    message = query.data
+    if message == '1':
         bot = SimpleBot(9, 4, False)
-    elif message == 'Обычный':
+    elif message == '2':
         bot = SimpleBot(6, 4, True)
-    elif message == 'Продвинутый':
+    elif message == '3':
         bot = AdvancedBot(8, 5, True)
-    else:
-        update.message.reply_text('Если хотите начать игру заново, напишите /start.')
-        return
 
     context.user_data['bot'] = bot
     context.user_data['moves'] = []
 
-    update.message.reply_text(bot.get_greeting())
+    query.edit_message_text(bot.get_greeting())
 
 
 def reply_image(update, context):
@@ -71,8 +78,8 @@ def reply_image(update, context):
 def start(update, context: CallbackContext):
     context.user_data.clear()
     update.message.reply_text('Выберите режим игры:',
-                              reply_markup=ReplyKeyboardMarkup(levels_keyboard,
-                                                               one_time_keyboard=True))
+                              reply_markup=InlineKeyboardMarkup(keyboard,
+                                                                one_time_keyboard=True))
 
 
 def main():
@@ -81,6 +88,7 @@ def main():
 
     text_handler = MessageHandler(Filters.text, reply)
     dp.add_handler(CommandHandler('start', start))
+    dp.add_handler(CallbackQueryHandler(button))
     dp.add_handler(text_handler)
 
     updater.start_polling()
