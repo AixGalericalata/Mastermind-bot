@@ -5,10 +5,14 @@ from utils import to_byte_array
 from advanced_bot import AdvancedBot
 from image_utils import create_image
 from io import BytesIO
+import pymorphy2
 
 TOKEN = '1714855501:AAHe0feLA42F36y-3luseYthox3gadVF5Rk'
+max_num_moves = 10
 levels_keyboard = [['Классический', 'Обычный', 'Продвинутый'],
                    ['Правила']]
+morph = pymorphy2.MorphAnalyzer()
+move_word = morph.parse('ходы')[0]
 
 
 def reply(update, context):
@@ -61,10 +65,21 @@ def reply_image(update, context):
         )
         context.user_data.clear()
     else:
-        context.bot.send_photo(
-            update.message.chat_id,
-            bio
-        )
+        if len(context.user_data['moves']) >= max_num_moves:
+            context.bot.send_photo(
+                update.message.chat_id,
+                bio,
+                caption='Вы проиграли!'
+            )
+            context.user_data.clear()
+        else:
+            left_moves = max_num_moves - len(context.user_data["moves"])
+            left_moves_word = move_word.make_agree_with_number(left_moves).word
+            context.bot.send_photo(
+                update.message.chat_id,
+                bio,
+                caption=f'У Вас осталось {left_moves} {left_moves_word}.'
+            )
 
 
 def start(update, context: CallbackContext):
