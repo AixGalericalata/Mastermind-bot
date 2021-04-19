@@ -2,6 +2,7 @@ from telegram.ext import Updater, MessageHandler, Filters, CommandHandler, Callb
 from telegram import ReplyKeyboardMarkup
 from simple_bot import SimpleBot
 from utils import to_byte_array
+from advanced_bot import AdvancedBot
 from image_utils import create_image
 from io import BytesIO
 
@@ -28,7 +29,7 @@ def reply(update, context):
     elif message == 'Обычный':
         bot = SimpleBot(6, 4, True)
     elif message == 'Продвинутый':
-        bot = SimpleBot(8, 5, True)
+        bot = AdvancedBot(8, 5, True)
     else:
         update.message.reply_text('Если хотите начать игру заново, напишите /start.')
         return
