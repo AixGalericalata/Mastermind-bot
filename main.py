@@ -5,7 +5,9 @@ from utils import to_byte_array
 from advanced_bot import AdvancedBot
 from text_utils import create_text
 import pymorphy2
+import os
 
+PORT = int(os.environ.get('PORT', 5000))
 TOKEN = '1714855501:AAHe0feLA42F36y-3luseYthox3gadVF5Rk'
 max_num_moves = 10
 levels_keyboard = [['Классический', 'Обычный', 'Продвинутый'],
@@ -83,7 +85,10 @@ def main():
     dp.add_handler(CommandHandler('start', start))
     dp.add_handler(text_handler)
 
-    updater.start_polling()
+    updater.start_webhook(listen="0.0.0.0",
+                          port=int(PORT),
+                          url_path=TOKEN)
+    updater.bot.setWebhook('https://mastermindbotyl.herokuapp.com/' + TOKEN)
     updater.idle()
 
 
