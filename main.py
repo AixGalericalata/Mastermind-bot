@@ -19,7 +19,6 @@ def reply(update, context):
     if bot:
         reply_image(update, context)
         return
-
     message = update.message.text
     if message == 'Правила':
         update.message.reply_text(
@@ -68,6 +67,14 @@ def reply_image(update, context):
                                       )
 
 
+def exit_dialog(update, context: CallbackContext):
+    update.message.reply_text('До встречи!',
+                              reply_markup=ReplyKeyboardMarkup(levels_keyboard,
+                                                               one_time_keyboard=True))
+    context.user_data.clear()
+    return
+
+
 def start(update, context: CallbackContext):
     context.user_data.clear()
     update.message.reply_text('Выберите режим игры:',
@@ -81,6 +88,7 @@ def main():
 
     text_handler = MessageHandler(Filters.text, reply)
     dp.add_handler(CommandHandler('start', start))
+    dp.add_handler(CommandHandler('exit', exit_dialog))
     dp.add_handler(text_handler)
 
     updater.start_polling()

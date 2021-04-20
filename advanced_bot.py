@@ -4,7 +4,7 @@ from base_bot import BaseBot
 
 
 def penalty(bulls_cows):
-    best_bulls = 0
+    best_bulls = 1
     best_cows = 1.5
     return (bulls_cows[0] - best_bulls) * (bulls_cows[0] - best_bulls) + (
             bulls_cows[1] - best_cows) * (bulls_cows[1] - best_cows)
