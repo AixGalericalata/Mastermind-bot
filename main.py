@@ -68,11 +68,8 @@ def reply_image(update, context):
 
 
 def exit_dialog(update, context: CallbackContext):
-    update.message.reply_text('До встречи!',
-                              reply_markup=ReplyKeyboardMarkup(levels_keyboard,
-                                                               one_time_keyboard=True))
+    update.message.reply_text('До встречи!')
     context.user_data.clear()
-    return
 
 
 def start(update, context: CallbackContext):
