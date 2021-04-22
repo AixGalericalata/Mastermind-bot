@@ -87,7 +87,7 @@ def main():
     updater = Updater(TOKEN, use_context=True)
     dp = updater.dispatcher
 
-    text_handler = MessageHandler(Filters.text, reply)
+    text_handler = MessageHandler(Filters.text & ~Filters.command, reply)
     dp.add_handler(CommandHandler('start', start))
     dp.add_handler(CommandHandler('exit', exit_dialog))
     dp.add_handler(text_handler)
@@ -95,7 +95,7 @@ def main():
     updater.start_webhook(listen="0.0.0.0",
                           port=PORT,
                           url_path=TOKEN,
-                          webhook_url="https://infinite-reaches-02872.herokuapp.com/" + TOKEN)
+                          webhook_url='https://infinite-reaches-02872.herokuapp.com/' + TOKEN)
     updater.idle()
 
 
