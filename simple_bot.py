@@ -13,5 +13,8 @@ class SimpleBot(BaseBot):
         else:
             self.enigma = bytearray(random.sample(range(num_colors), num_symbols))
 
-    def get_answer(self, guess):
+    def check(self, guess):
         return bulls_cows(self.enigma, guess)
+
+    def get_answer(self):
+        return self.enigma

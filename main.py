@@ -56,7 +56,7 @@ def reply_image(update, context):
     if type(msg) == str:
         update.message.reply_text(msg)
         return
-    answer = bot.get_answer(msg)
+    answer = bot.check(msg)
     context.user_data['moves'].append((msg, answer))
     text = create_text(context.user_data['moves'])
     if answer[0] == bot.num_symbols:
@@ -65,7 +65,9 @@ def reply_image(update, context):
         context.user_data.clear()
     else:
         if len(context.user_data['moves']) >= max_num_moves:
-            update.message.reply_text(f'{text}\n\nВы проиграли!'
+            answer = ''.join(map(lambda x: str(x + 1), bot.get_answer()))
+            update.message.reply_text(f'{text}\n\nВы проиграли!\n'
+                                      f'Правильный ответ: {answer}'
                                       )
             context.user_data.clear()
         else:

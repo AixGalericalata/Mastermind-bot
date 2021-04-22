@@ -4,7 +4,7 @@ class BaseBot:
         self.num_symbols = num_symbols
         self.repetition = repetition
 
-    def get_answer(self, guess):
+    def check(self, guess):
         pass
 
     def get_greeting(self):
@@ -12,3 +12,6 @@ class BaseBot:
         return f'Я загадал комбинацию из {self.num_symbols} цифр от 1 до ' \
                f'{self.num_colors} {msg}.\n' \
                f'Попробуйте её отгадать!'
+
+    def get_answer(self):
+        pass

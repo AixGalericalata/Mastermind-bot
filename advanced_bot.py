@@ -1,6 +1,7 @@
 from mastermind import bulls_cows
 import itertools
 from base_bot import BaseBot
+import random
 
 
 def penalty(bulls_cows):
@@ -17,7 +18,7 @@ class AdvancedBot(BaseBot):
             map(lambda x: bytearray(x),
                 itertools.product(range(self.num_colors), repeat=self.num_symbols)))
 
-    def get_answer(self, guess):
+    def check(self, guess):
         dict_answers = {}
         for answer in self.answers:
             bulls_and_cows = bulls_cows(answer, guess)
@@ -29,3 +30,6 @@ class AdvancedBot(BaseBot):
         n = min(answers, key=penalty)
         self.answers = dict_answers[n]
         return n
+
+    def get_answer(self):
+        return random.choice(self.answers)
