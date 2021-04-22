@@ -7,6 +7,10 @@ from text_utils import create_text
 import pymorphy2
 import os
 
+# !!! Бот развёрнут на heroku. !!!
+#  t.me/mastermindYL_bot
+
+
 PORT = int(os.environ.get('PORT', '8443'))
 TOKEN = os.environ.get('TOKEN')
 max_num_moves = 10
